@@ -1,0 +1,278 @@
+name: SZCA CI/CD Pipeline
+
+# H15 hardening notes:
+#   * All third-party actions are pinned to full version tags below.
+#     TODO: pin each `uses:` to an immutable commit SHA for stronger
+#     supply-chain guarantees (e.g. actions/checkout@<40-char-sha>).
+#   * Added cargo-audit (both Rust crates), Trivy image scan, and gitleaks
+#     secret scanning.
+#   * C++ tests now run via `ctest` (one binary per test file) instead of a
+#     single ./szca_tests binary.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # ============================================================================
+  # Job 1: Rust Gateway Tests
+  # ============================================================================
+  rust-tests:
+    name: Rust Gateway Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Kept to stable today; matrix documents/enables adding more toolchains
+        # (e.g. beta) without restructuring the job.
+        rust: [stable]
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: clippy, rustfmt
+
+      - name: Cache Cargo
+        uses: actions/cache@v4 # TODO: pin to commit SHA
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            szca_media_gateway/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('szca_media_gateway/Cargo.lock') }}
+
+      - name: Run Tests
+        working-directory: szca_media_gateway
+        run: cargo test --verbose
+
+      - name: Run Clippy
+        working-directory: szca_media_gateway
+        run: cargo clippy -- -D warnings
+
+      - name: Check Formatting
+        working-directory: szca_media_gateway
+        run: cargo fmt -- --check
+
+  # ============================================================================
+  # Job 2: C++ Engine Tests (ctest: one binary per test file)
+  # ============================================================================
+  cpp-tests:
+    name: C++ Engine Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Configure CMake
+        working-directory: szca_onnx_engine
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        working-directory: szca_onnx_engine/build
+        run: make -j$(nproc)
+
+      - name: Run Tests (ctest)
+        working-directory: szca_onnx_engine/build
+        run: ctest --output-on-failure
+
+  # ============================================================================
+  # Job 3: Integration Tests
+  # ============================================================================
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [rust-tests, cpp-tests]
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
+
+      - name: Run Integration Tests
+        working-directory: szca_tests
+        run: cargo test integration --verbose
+
+      - name: Run E2E Tests
+        working-directory: szca_tests
+        run: cargo test e2e --verbose
+
+  # ============================================================================
+  # Job 4: Security Tests
+  # ============================================================================
+  security-tests:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
+
+      - name: Run Security Tests
+        working-directory: szca_tests
+        run: cargo test security --verbose
+
+  # ============================================================================
+  # Job 5: Performance Tests
+  # ============================================================================
+  performance-tests:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
+
+      - name: Run Benchmarks
+        working-directory: szca_tests
+        run: cargo test benchmark --verbose
+
+  # ============================================================================
+  # Job 6: cargo audit (dependency vulnerability scan for both Rust crates)
+  # ============================================================================
+  cargo-audit:
+    name: Cargo Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --locked
+
+      - name: Audit szca_media_gateway
+        working-directory: szca_media_gateway
+        run: cargo audit
+
+      - name: Audit szca_tests
+        working-directory: szca_tests
+        run: cargo audit
+
+  # ============================================================================
+  # Job 7: Secret scanning (gitleaks)
+  # ============================================================================
+  secret-scan:
+    name: Secret Scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+        with:
+          fetch-depth: 0
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2 # TODO: pin to commit SHA
+
+  # ============================================================================
+  # Job 8: Build Docker Images
+  # ============================================================================
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: [rust-tests, cpp-tests]
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      # CPU image: buildable & smoke-testable on a CPU runner. Depends on the
+      # szca_cpu_deploy/Dockerfile fix owned by the other agent.
+      - name: Build CPU Docker Image
+        run: docker build -f szca_cpu_deploy/Dockerfile -t szca-cpu:test .
+
+      - name: Test CPU Docker Image
+        run: |
+          docker run -d --name szca-test -p 8080:8080 szca-cpu:test
+          sleep 5
+          curl -f http://localhost:8080/health || exit 1
+          docker stop szca-test
+
+      # GPU image: build only. It uses an nvidia/cuda base and requires a GPU
+      # runtime, so it CANNOT be smoke-tested on a CPU GitHub runner. Do not
+      # `docker run` this image here.
+      - name: Build GPU Docker Image
+        run: docker build -f Dockerfile -t szca-gpu:test .
+
+  # ============================================================================
+  # Job 9: Trivy image vulnerability scan (runs after images are built)
+  # ============================================================================
+  trivy-scan:
+    name: Trivy Image Scan
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to commit SHA
+
+      # Rebuild the CPU image in this job so Trivy has a local image to scan.
+      - name: Build CPU Docker Image
+        run: docker build -f szca_cpu_deploy/Dockerfile -t szca-cpu:test .
+
+      - name: Scan CPU image with Trivy
+        uses: aquasecurity/trivy-action@0.24.0 # TODO: pin to commit SHA
+        with:
+          image-ref: szca-cpu:test
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      - name: Build GPU Docker Image
+        run: docker build -f Dockerfile -t szca-gpu:test .
+
+      - name: Scan GPU image with Trivy
+        uses: aquasecurity/trivy-action@0.24.0 # TODO: pin to commit SHA
+        with:
+          image-ref: szca-gpu:test
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+  # ============================================================================
+  # Job 10: Summary
+  # ============================================================================
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs:
+      - rust-tests
+      - cpp-tests
+      - integration-tests
+      - security-tests
+      - performance-tests
+      - cargo-audit
+      - secret-scan
+      - docker-build
+      - trivy-scan
+    steps:
+      - name: All Tests Passed
+        run: |
+          echo "✅ All CI jobs completed successfully"
+          echo ""
+          echo "Jobs completed:"
+          echo "  - Rust Gateway Tests"
+          echo "  - C++ Engine Tests (ctest)"
+          echo "  - Integration Tests"
+          echo "  - Security Tests"
+          echo "  - Performance Tests"
+          echo "  - Cargo Audit"
+          echo "  - Secret Scan (gitleaks)"
+          echo "  - Docker Build (CPU + GPU)"
+          echo "  - Trivy Image Scan"

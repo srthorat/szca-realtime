@@ -1,0 +1,37 @@
+[package]
+name = "szca_media_gateway"
+version = "5.0.0"
+edition = "2021"
+description = "SZCA Real-Time Voice Engine — Media Gateway"
+authors = ["SZCA Team"]
+license = "Apache-2.0"
+
+[[bin]]
+name = "szca_media_gateway"
+path = "src/main.rs"
+
+[lib]
+name = "szca_media_gateway"
+path = "src/lib.rs"
+
+[dependencies]
+axum = { version = "0.7", features = ["ws", "json"] }
+tokio = { version = "1", features = ["rt-multi-thread", "net", "macros", "sync", "time", "io-util", "signal"] }
+futures = "0.3"
+futures-util = "0.3"
+uuid = { version = "1.6", features = ["v4"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+base64 = "0.22"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+tokio-test = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

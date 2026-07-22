@@ -1,0 +1,32 @@
+# Build artifacts
+**/target/
+**/build/
+build/
+target/
+
+# Models (mounted as a volume at runtime, never baked into the image)
+models/
+**/models/
+*.onnx
+*.bin
+
+# VCS / CI
+.git/
+.github/
+.gitignore
+
+# Node / JS tooling
+node_modules/
+**/node_modules/
+
+# Editor / OS cruft
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Docs & local scratch
+*.md
+!README.md
+*.log
+tmp/

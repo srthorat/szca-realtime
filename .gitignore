@@ -1,0 +1,32 @@
+# Rust build artifacts
+**/target/
+# Cargo.lock IS committed (these are applications, so lock for reproducible builds)
+
+# C++ / CMake build artifacts
+**/build/
+**/build_ort/
+*.o
+*.obj
+*.a
+*.dylib
+*.so
+CMakeCache.txt
+CMakeFiles/
+
+# Model weights (downloaded via download_models.sh, mounted as a volume; never committed)
+**/models/
+*.onnx
+*.bin
+!models/.gitkeep
+
+# Secrets / local config
+.env
+.env.*
+*.pem
+*.key
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
