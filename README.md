@@ -6,7 +6,7 @@ A self-hosted, open-source voice inference platform that processes audio in a **
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-5.0.0-green.svg)](VERSION)
-[![Tests](https://img.shields.io/badge/Tests-341%20passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-213%20passing-brightgreen.svg)](#testing)
 
 ---
 
@@ -33,13 +33,13 @@ A self-hosted, open-source voice inference platform that processes audio in a **
 
 | Feature | Description |
 |---|---|
-| **Sub-60ms Latency** | Glass-to-glass audio processing under 60ms |
-| **Pure Streaming** | No batching — every token processed immediately |
-| **4 APIs** | Unified Voice, STT, LLM, TTS — all streaming |
-| **Hardware Agnostic** | Runs on GPU (NVIDIA, AMD) or CPU (x86_64, ARM) |
-| **Zero-Copy IPC** | POSIX shared memory — no TCP loopback |
-| **Lock-Free** | Atomic operations, no mutex on hot path |
-| **100% Test Coverage** | 341 tests across all components |
+| **Sub-100ms Latency** | EOU token driven streaming turn-end latency under 100ms |
+| **Pure Streaming** | No batching — streaming STT & TTS token delivery |
+| **4 APIs** | Unified Voice (WebSocket), STT, LLM, TTS (HTTP SSE) |
+| **Hardware Agnostic** | Runs on GPU (NVIDIA L40S/A100) or CPU (x86_64, ARM) |
+| **Zero-Copy IPC** | Shared memory & in-process ONNX Runtime pool |
+| **Lock-Free Hot Path** | Atomic barge-in interrupts and MPMC stage queues |
+| **Tested & Verified** | 213 unit & integration tests passing cleanly |
 | **Commercial License** | All models MIT / Apache 2.0 / CC-BY-4.0 |
 
 ---
@@ -101,24 +101,17 @@ Customer Gateway
 
 ## Quick Start
 
-### Option 1: CPU (No GPU Required)
+### Option 1: Local CPU Mode (No GPU Required)
 
 ```bash
-# Clone the repo
-git clone https://github.com/your-org/szca.git
-cd szca
+# 1. Download ONNX models
+./download_models.sh
 
-# Build CPU deployment
-cd szca_cpu_deploy
-chmod +x build.sh
-./build.sh
+# 2. Run local CPU gateway
+./run_cpu.sh
 
-# Start server
-cd build
-./szca_cpu --port 8080
-
-# Test
-curl http://localhost:8080/health
+# 3. Test baseline health
+./baseline_check.py
 ```
 
 ### Option 2: GPU (NVIDIA Required)
@@ -245,7 +238,7 @@ channels = 1
 chunk_duration_ms = 20
 
 [dsp]
-model_path = "./models/deepfilternet3.onnx"
+model_dir = "./models/dfn3"      # 3 ONNX stages + config.ini, not one file
 use_simd = true
 
 [vad]
@@ -641,9 +634,14 @@ szca/
 │   │   ├── session.rs                # Session management
 │   │   ├── gateway.rs                # WebSocket server
 │   │   └── api_routes.rs             # HTTP SSE endpoints
-│   └── models/
-│       ├── silero_vad.onnx
-│       └── deepfilternet3.onnx
+│   └── ...
+│
+├── models/                            # All weights, one root (gitignored)
+│   ├── stt/    parakeet_{nemo128,encoder.int8,decoder_joint.int8} + vocab
+│   ├── tts/    kokoro_v1.0_quantized.onnx + tokenizer + kokoro_voices/
+│   ├── llm/    one dir per checkpoint (Hermes-3-…, Qwen2.5-…)
+│   ├── vad/    silero_vad.onnx
+│   └── dfn3/   dfn3_{enc,erb_dec,df_dec}.onnx + dfn3_config.ini
 │
 ├── szca_onnx_engine/                  # C++ Engine (74 tests)
 │   ├── CMakeLists.txt

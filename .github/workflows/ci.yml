@@ -93,10 +93,13 @@ jobs:
         run: ctest --output-on-failure
 
   # ============================================================================
-  # Job 3: Integration Tests
+  # Job 3: Mock integration patterns (szca_tests — no gateway dependency)
+  #
+  # Real gateway turn contract + dialect tests live in szca_media_gateway/tests/
+  # e2e_pipeline.rs and run in the rust-tests job above.
   # ============================================================================
-  integration-tests:
-    name: Integration Tests
+  mock-integration-tests:
+    name: Mock Integration Patterns (szca_tests)
     runs-on: ubuntu-latest
     needs: [rust-tests, cpp-tests]
     steps:
@@ -105,19 +108,19 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
 
-      - name: Run Integration Tests
+      - name: Run mock integration tests
         working-directory: szca_tests
         run: cargo test integration --verbose
 
-      - name: Run E2E Tests
+      - name: Run mock E2E journey tests
         working-directory: szca_tests
         run: cargo test e2e --verbose
 
   # ============================================================================
-  # Job 4: Security Tests
+  # Job 4: Reference security logic (szca_tests — not wired to gateway auth)
   # ============================================================================
-  security-tests:
-    name: Security Tests
+  reference-security-tests:
+    name: Reference Security Logic (szca_tests)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4 # TODO: pin to commit SHA
@@ -125,15 +128,15 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
 
-      - name: Run Security Tests
+      - name: Run reference security tests
         working-directory: szca_tests
         run: cargo test security --verbose
 
   # ============================================================================
-  # Job 5: Performance Tests
+  # Job 5: Mock performance benchmarks (szca_tests — simulate_pipeline, not ORT)
   # ============================================================================
-  performance-tests:
-    name: Performance Benchmarks
+  mock-performance-tests:
+    name: Mock Performance Benchmarks (szca_tests)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4 # TODO: pin to commit SHA
@@ -141,7 +144,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable # TODO: pin to commit SHA
 
-      - name: Run Benchmarks
+      - name: Run mock benchmarks
         working-directory: szca_tests
         run: cargo test benchmark --verbose
 
@@ -254,9 +257,9 @@ jobs:
     needs:
       - rust-tests
       - cpp-tests
-      - integration-tests
-      - security-tests
-      - performance-tests
+      - mock-integration-tests
+      - reference-security-tests
+      - mock-performance-tests
       - cargo-audit
       - secret-scan
       - docker-build
@@ -267,11 +270,11 @@ jobs:
           echo "✅ All CI jobs completed successfully"
           echo ""
           echo "Jobs completed:"
-          echo "  - Rust Gateway Tests"
+          echo "  - Rust Gateway Tests (includes e2e_pipeline contract)"
           echo "  - C++ Engine Tests (ctest)"
-          echo "  - Integration Tests"
-          echo "  - Security Tests"
-          echo "  - Performance Tests"
+          echo "  - Mock Integration Patterns (szca_tests)"
+          echo "  - Reference Security Logic (szca_tests)"
+          echo "  - Mock Performance Benchmarks (szca_tests)"
           echo "  - Cargo Audit"
           echo "  - Secret Scan (gitleaks)"
           echo "  - Docker Build (CPU + GPU)"

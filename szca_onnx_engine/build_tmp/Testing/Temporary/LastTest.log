@@ -1,0 +1,238 @@
+Start testing: Jul 26 00:52 IST
+----------------------------------------------------------
+1/7 Testing: test_stt
+1/7 Test: test_stt
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_stt"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_stt" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running STT tests...
+  [PASS] test_stt_config_default
+  [PASS] test_stt_processor_new
+  [PASS] test_stt_initialize
+  [PASS] test_stt_process_not_initialized
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_process_silence
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_process_speech
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_process_multiple_frames
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_silence_flushes_final
+  [PASS] test_stt_config_accessor
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_no_interim_results
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_null_input
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_stt_timestamp_increments
+STT tests: ALL PASSED
+<end of output>
+Test time =   1.33 sec
+----------------------------------------------------------
+Test Passed.
+"test_stt" end time: Jul 26 00:52 IST
+"test_stt" time elapsed: 00:00:01
+----------------------------------------------------------
+
+2/7 Testing: test_llm
+2/7 Test: test_llm
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_llm"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_llm" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running LLM tests...
+  [PASS] test_llm_config_default
+  [PASS] test_llm_processor_new
+  [PASS] test_llm_initialize
+[ORT] CreateSession failed for ./models/hermes-3-3b-int8.onnx: Load model from ./models/hermes-3-3b-int8.onnx failed:Load model ./models/hermes-3-3b-int8.onnx failed. File doesn't exist
+[LLM] Failed to load model: ./models/hermes-3-3b-int8.onnx
+  [PASS] test_llm_generate_next
+[ORT] CreateSession failed for ./models/hermes-3-3b-int8.onnx: Load model from ./models/hermes-3-3b-int8.onnx failed:Load model ./models/hermes-3-3b-int8.onnx failed. File doesn't exist
+[LLM] Failed to load model: ./models/hermes-3-3b-int8.onnx
+  [PASS] test_llm_generate_multiple
+[ORT] CreateSession failed for ./models/hermes-3-3b-int8.onnx: Load model from ./models/hermes-3-3b-int8.onnx failed:Load model ./models/hermes-3-3b-int8.onnx failed. File doesn't exist
+[LLM] Failed to load model: ./models/hermes-3-3b-int8.onnx
+  [PASS] test_llm_generate_complete
+[ORT] CreateSession failed for ./models/hermes-3-3b-int8.onnx: Load model from ./models/hermes-3-3b-int8.onnx failed:Load model ./models/hermes-3-3b-int8.onnx failed. File doesn't exist
+[LLM] Failed to load model: ./models/hermes-3-3b-int8.onnx
+  [PASS] test_llm_reset
+  [PASS] test_llm_config_accessor
+  [PASS] test_llm_generate_not_initialized
+[ORT] CreateSession failed for ./models/hermes-3-3b-int8.onnx: Load model from ./models/hermes-3-3b-int8.onnx failed:Load model ./models/hermes-3-3b-int8.onnx failed. File doesn't exist
+[LLM] Failed to load model: ./models/hermes-3-3b-int8.onnx
+  [PASS] test_llm_generate_no_messages
+LLM tests: ALL PASSED
+<end of output>
+Test time =   0.53 sec
+----------------------------------------------------------
+Test Passed.
+"test_llm" end time: Jul 26 00:52 IST
+"test_llm" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/7 Testing: test_tts
+3/7 Test: test_tts
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_tts"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_tts" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running TTS tests...
+  [PASS] test_tts_config_default
+  [PASS] test_tts_processor_new
+  [PASS] test_tts_initialize
+[ORT] CreateSession failed for ./models/kokoro_v1.0.onnx: Load model from ./models/kokoro_v1.0.onnx failed:Load model ./models/kokoro_v1.0.onnx failed. File doesn't exist
+[TTS] Failed to load model: ./models/kokoro_v1.0.onnx
+  [PASS] test_tts_synthesize_empty
+[ORT] CreateSession failed for ./models/kokoro_v1.0.onnx: Load model from ./models/kokoro_v1.0.onnx failed:Load model ./models/kokoro_v1.0.onnx failed. File doesn't exist
+[TTS] Failed to load model: ./models/kokoro_v1.0.onnx
+  [PASS] test_tts_synthesize_text
+[ORT] CreateSession failed for ./models/kokoro_v1.0.onnx: Load model from ./models/kokoro_v1.0.onnx failed:Load model ./models/kokoro_v1.0.onnx failed. File doesn't exist
+[TTS] Failed to load model: ./models/kokoro_v1.0.onnx
+  [PASS] test_tts_synthesize_multiple_chunks
+[ORT] CreateSession failed for ./models/kokoro_v1.0.onnx: Load model from ./models/kokoro_v1.0.onnx failed:Load model ./models/kokoro_v1.0.onnx failed. File doesn't exist
+[TTS] Failed to load model: ./models/kokoro_v1.0.onnx
+  [PASS] test_tts_available_voices
+  [PASS] test_tts_synthesize_not_initialized
+  [PASS] test_tts_config_accessor
+TTS tests: ALL PASSED
+<end of output>
+Test time =   0.66 sec
+----------------------------------------------------------
+Test Passed.
+"test_tts" end time: Jul 26 00:52 IST
+"test_tts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/7 Testing: test_resampler
+4/7 Test: test_resampler
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_resampler"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_resampler" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running Resampler tests...
+  [PASS] test_resampler_config_default
+  [PASS] test_resampler_new
+  [PASS] test_resampler_initialize
+  [PASS] test_resampler_output_sample_count
+  [PASS] test_resampler_process_silence
+  [PASS] test_resampler_process_sine_wave
+  [PASS] test_resampler_process_not_initialized
+  [PASS] test_resampler_process_null_input
+  [PASS] test_resampler_config_accessor
+  [PASS] test_resampler_preserves_amplitude
+Resampler tests: ALL PASSED
+<end of output>
+Test time =   0.78 sec
+----------------------------------------------------------
+Test Passed.
+"test_resampler" end time: Jul 26 00:52 IST
+"test_resampler" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/7 Testing: test_ipc
+5/7 Test: test_ipc
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_ipc"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_ipc" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running IPC tests...
+  [PASS] test_ipc_config_default
+  [PASS] test_ipc_channel_new
+  [PASS] test_ipc_initialize
+  [PASS] test_ipc_write_not_connected
+  [PASS] test_ipc_read_not_connected
+  [PASS] test_ipc_write_read_single
+  [PASS] test_ipc_write_read_fifo
+  [PASS] test_ipc_buffer_full
+  [PASS] test_ipc_buffer_empty
+  [PASS] test_ipc_write_too_large
+  [PASS] test_ipc_wraparound
+  [PASS] test_ipc_config_accessor
+IPC tests: ALL PASSED
+<end of output>
+Test time =   0.58 sec
+----------------------------------------------------------
+Test Passed.
+"test_ipc" end time: Jul 26 00:52 IST
+"test_ipc" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/7 Testing: test_session
+6/7 Test: test_session
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_session"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_session" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running Session tests...
+  [PASS] test_session_new
+  [PASS] test_session_unique_id
+  [PASS] test_session_activate
+  [PASS] test_session_activate_invalid
+  [PASS] test_session_pause
+  [PASS] test_session_pause_invalid
+  [PASS] test_session_resume
+  [PASS] test_session_resume_invalid
+  [PASS] test_session_end
+  [PASS] test_session_cancel
+  [PASS] test_session_reset_cancel
+  [PASS] test_session_stats
+Session tests: ALL PASSED
+<end of output>
+Test time =   0.66 sec
+----------------------------------------------------------
+Test Passed.
+"test_session" end time: Jul 26 00:52 IST
+"test_session" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/7 Testing: test_engine
+7/7 Test: test_engine
+Command: "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp/test_engine"
+Directory: /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp
+"test_engine" start time: Jul 26 00:52 IST
+Output:
+----------------------------------------------------------
+Running Engine tests...
+  [PASS] test_engine_config_default
+  [PASS] test_engine_new
+  [PASS] test_engine_initialize
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_engine_process_audio_null
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_engine_process_audio_silence
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_engine_process_audio_speech
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_engine_session
+  [PASS] test_engine_config_accessor
+[ORT] CreateSession failed for ./models/parakeet_tdt_0.6b_v3_fp16.onnx: Load model from ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed:Load model ./models/parakeet_tdt_0.6b_v3_fp16.onnx failed. File doesn't exist
+[STT] Failed to load model: ./models/parakeet_tdt_0.6b_v3_fp16.onnx
+  [PASS] test_engine_reset
+Engine tests: ALL PASSED
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"test_engine" end time: Jul 26 00:52 IST
+"test_engine" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jul 26 00:52 IST

@@ -1,0 +1,39 @@
+# =============================================================================
+# SZCA Media Gateway — Production values (g6e.48xlarge / EKS)
+# =============================================================================
+# Override values for production deployment on g6e.48xlarge (8× L40S).
+# Tuned for 1,000 concurrent sessions.
+# =============================================================================
+
+replicaCount: 3
+
+image:
+  tag: "5.0.0-prod"
+
+ingress:
+  host: api.szca.example.com
+
+env:
+  LLM_BACKEND: vllm
+  LLM_BASE_URL: http://vllm-lb.szca.svc.cluster.local:8000
+  LLM_MODEL: hermes-3-llama-3.1-8b
+  LLM_MAX_TOKENS: "256"
+  LLM_TEMPERATURE: "0.7"
+  STT_REPLICAS: "32"
+  LLM_REPLICAS: "128"
+  TTS_REPLICAS: "16"
+
+resources:
+  requests:
+    cpu: "8"
+    memory: "16Gi"
+  limits:
+    cpu: "32"
+    memory: "64Gi"
+
+nodeSelector:
+  node.kubernetes.io/instance-type: g6e.48xlarge
+
+autoscaling:
+  minReplicas: 3
+  maxReplicas: 8

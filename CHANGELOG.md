@@ -6,6 +6,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [5.1.0] - 2026-07-26
+
+### Added
+
+#### Gateway (Rust)
+- `<EOU>` / Streaming STT early turn-taking in `rt_session.rs` for sub-100ms turn latency; live `TranscriptDelta` events over WebSocket during audio stream accumulation.
+- `SttChunkResult` and `push_chunk` / `reset_stream` trait methods on `SttStage`.
+
+#### Tooling & Deployment
+- Supply-Chain Hardening: Pinned base image immutable `@sha256:...` digests across `Dockerfile` (`rust:1.92-slim-bookworm`, `ubuntu:22.04`, `nvidia/cuda:12.4.0`) and `Dockerfile.dev`.
+- `download_models.sh --with-streaming` CLI flag and `WITH_STREAMING=1` environment variable to gate ~400 MB streaming STT model downloads.
+- Pinned ONNX Runtime 1.22.0 in production `Dockerfile` with SHA-256 integrity verification (matching `Dockerfile.dev`).
+- Added `/opt/onnxruntime` header and library paths to `szca_onnx_engine/CMakeLists.txt`.
+
+---
+
 ## [5.0.0] - 2026-07-22
 
 ### Added

@@ -1,0 +1,36 @@
+# ============================================================================
+# SZCA Dev LLM Server — ONNX Runtime GenAI, CPU, OpenAI-compatible API
+# ============================================================================
+# Same wire format as prod vLLM. The Rust gateway's VllmClient connects to
+# this server identically in dev and prod.
+#
+# Usage:
+#   # Build
+#   docker build -f Dockerfile.llm-dev -t llm-dev .
+#
+#   # Run (models must be in ./models/ on the host — one root, per-stage subdirs;
+#   # this server reads ./models/llm/llama3.1-8b-onnx/)
+#   docker run -p 8080:8080 -v $(pwd)/models:/app/models llm-dev
+#
+#   # Or via docker-compose (see docker-compose.dev.yml)
+# ============================================================================
+
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir \
+    onnxruntime-genai \
+    huggingface_hub \
+    fastapi \
+    uvicorn
+
+WORKDIR /app
+
+COPY dev_server.py ./
+COPY download_model.py ./
+
+# Download INT4 ONNX model (~4.9 GB) — cached in a Docker layer.
+RUN python3 download_model.py || echo "Model download failed — mount models via volume"
+
+EXPOSE 8080
+
+CMD ["uvicorn", "dev_server:app", "--host", "0.0.0.0", "--port", "8080"]

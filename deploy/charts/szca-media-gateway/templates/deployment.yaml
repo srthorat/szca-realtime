@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "szca-media-gateway.fullname" . }}
+  labels:
+    {{- include "szca-media-gateway.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "szca-media-gateway.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "szca-media-gateway.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "szca-media-gateway.fullname" . }}
+      {{- end }}
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- if .Values.volumes.models.enabled }}
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumes.models.existingClaim | default (printf "%s-models" (include "szca-media-gateway.fullname" .)) }}
+        - name: onnxruntime
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumes.onnxruntime.existingClaim | default (printf "%s-onnxruntime" (include "szca-media-gateway.fullname" .)) }}
+      {{- end }}
+
+      {{- if .Values.modelInit.enabled }}
+      initContainers:
+        - name: model-downloader
+          image: "{{ .Values.modelInit.image.repository }}:{{ .Values.modelInit.image.tag }}"
+          command: ["/bin/bash", "-c", "./download_models.sh"]
+          env:
+            - name: MODELS_ROOT
+              value: {{ .Values.volumes.models.mountPath | quote }}
+          volumeMounts:
+            - name: models
+              mountPath: {{ .Values.volumes.models.mountPath }}
+      {{- end }}
+
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: {{ include "szca-media-gateway.fullname" . }}-config
+          {{- if .Values.envSecrets.enabled }}
+            - secretRef:
+                name: {{ .Values.envSecrets.secretName }}
+          {{- end }}
+
+          {{- if .Values.volumes.models.enabled }}
+          volumeMounts:
+            - name: models
+              mountPath: {{ .Values.volumes.models.mountPath }}
+              readOnly: true
+            - name: onnxruntime
+              mountPath: {{ .Values.volumes.onnxruntime.mountPath }}
+              readOnly: true
+          {{- end }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveness.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
+            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
+            failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,95 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Active Sessions",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "szca_sessions_active",
+          "legendFormat": "Active Sessions",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "Total Requests & Success Rate",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "targets": [
+        {
+          "expr": "szca_requests_total",
+          "legendFormat": "Total Requests",
+          "refId": "A"
+        },
+        {
+          "expr": "szca_requests_success / (szca_requests_total > 0 or 1)",
+          "legendFormat": "Success Rate",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "title": "Inference Throughput (Tokens & Audio)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "rate(szca_llm_tokens[1m])",
+          "legendFormat": "LLM Tokens/s",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(szca_tts_chunks[1m])",
+          "legendFormat": "TTS Chunks/s",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(szca_stt_partials[1m])",
+          "legendFormat": "STT Partials/s",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "title": "Pool Queue Depth",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "targets": [
+        {
+          "expr": "szca_pool_queue_depth",
+          "legendFormat": "{{stage}} Queue Depth",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "Stage Execution Latency Quantiles (ms)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 12 },
+      "targets": [
+        {
+          "expr": "szca_pool_latency_milliseconds",
+          "legendFormat": "{{stage}} p{{quantile}}",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["szca", "realtime", "voice", "prometheus"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "SZCA Realtime Voice Engine Overview",
+  "uid": "szca-realtime-voice"
+}

@@ -1,0 +1,46 @@
+# SZCA Inference Service — real STT/LLM/TTS/pipeline over HTTP.
+#
+# Models (~1.9 GB, gitignored) are mounted read-only from the host rather than
+# baked into the image. Run ../download_models.sh first to populate them.
+#
+#   docker compose up --build
+#   curl -F file=@sample.wav http://localhost:8900/v1/stt
+#
+# Scale horizontally for concurrency (each replica loads its own sessions):
+#   docker compose up --scale inference=3   (put a load balancer in front)
+
+services:
+  inference:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: szca-inference:1.0.0
+    ports:
+      - "8900:8900"
+    volumes:
+      # Host model root -> container /models/engine (read-only). One root for the
+      # whole repo, split per stage: models/{stt,tts,llm,vad,dfn3}.
+      - ../models:/models/engine:ro
+    environment:
+      # ORT intra-op threads per session. Tune to allocated CPU.
+      ORT_INTRA_OP_THREADS: "4"
+      # Max simultaneous heavy inferences before 503 backpressure.
+      MAX_CONCURRENCY: "8"
+      # Seconds a request waits for a slot before 503.
+      ACQUIRE_TIMEOUT_S: "5.0"
+      TTS_VOICE: "af_heart"
+      # LLM = Qwen2.5-1.5B-Instruct (int8). Every LLM gets its OWN directory
+      # under models/llm/ because config.json / generation_config.json are
+      # per-model — pointing at the parent would mix one model's graph with
+      # another's geometry. Geometry + chat template are auto-detected from
+      # config.json; the filenames below are pinned so discovery is unambiguous.
+      LLM_MODELS_DIR: "/models/engine/llm/Qwen2.5-1.5B-Instruct"
+      LLM_ONNX_FILE: "qwen2.5-1.5b-instruct.int8.onnx"
+      LLM_TOKENIZER_FILE: "qwen_tokenizer.json"
+    # Give ORT enough cores + headroom for the 1.2 GB LLM session.
+    deploy:
+      resources:
+        limits:
+          cpus: "8.0"
+          memory: 6g
+    restart: unless-stopped

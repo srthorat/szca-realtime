@@ -1,0 +1,31 @@
+{{- if and .Values.volumes.models.enabled (not .Values.volumes.models.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "szca-media-gateway.fullname" . }}-models
+  labels:
+    {{- include "szca-media-gateway.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.volumes.models.accessMode }}
+  storageClassName: {{ .Values.volumes.models.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.volumes.models.size }}
+{{- end }}
+---
+{{- if and .Values.volumes.onnxruntime.enabled (not .Values.volumes.onnxruntime.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "szca-media-gateway.fullname" . }}-onnxruntime
+  labels:
+    {{- include "szca-media-gateway.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.volumes.onnxruntime.accessMode }}
+  storageClassName: {{ .Values.volumes.onnxruntime.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.volumes.onnxruntime.size }}
+{{- end }}

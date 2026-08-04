@@ -1,0 +1,8 @@
+test_stt 1 1.33406
+test_llm 1 0.53361
+test_tts 1 0.663639
+test_resampler 1 0.777782
+test_ipc 1 0.584759
+test_session 1 0.660303
+test_engine 1 0.586186
+---

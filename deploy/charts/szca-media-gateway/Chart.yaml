@@ -1,0 +1,21 @@
+apiVersion: v2
+name: szca-media-gateway
+description: SZCA Realtime Voice Engine — Media Gateway Helm chart for EKS
+type: application
+version: 5.0.0
+appVersion: "5.0.0"
+kubeVersion: ">= 1.27"
+
+home: https://github.com/thoratsr7/szca
+sources:
+  - https://github.com/thoratsr7/szca
+keywords:
+  - voice
+  - realtime
+  - stt
+  - llm
+  - tts
+  - websocket
+maintainers:
+  - name: SZCA Team
+    email: thoratsr7@gmail.com

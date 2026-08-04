@@ -1,0 +1,101 @@
+# syntax=docker/dockerfile:1
+# ============================================================================
+# SZCA Dev image — hot-reload Rust gateway
+# ============================================================================
+# Usage:
+#   docker compose -f docker-compose.dev.yml up --build gateway
+#
+# Debug build (fast compile, symbols, no LTO) with the source bind-mounted for
+# live reload via cargo-watch. Models are NOT baked in — they come from the
+# `models` volume, mirroring the host's ./models/ layout.
+#
+# ONE stage on purpose: hot-reload needs the Rust toolchain at RUNTIME, so a
+# slim runtime stage would have to reinstall everything the builder had. The
+# prod image (Dockerfile) is the multi-stage one — it ships a static binary and
+# no toolchain.
+# ============================================================================
+
+FROM rust:1.92-slim-bookworm@sha256:f1f73538ebe623fd3673a35aff3df358ae1084c64c55646516e5b17b321b6c9b
+
+# ---- ONNX Runtime ----------------------------------------------------------
+# There is NO `libonnxruntime` apt package in Debian (any suite) — installing it
+# was the reason this image never built. Take the official upstream tarball,
+# pinned to the version the `ort` crate's C API expects:
+#   ort 2.0.0-rc.10 -> ort-sys ORT_API_VERSION = 22 -> ONNX Runtime 1.22.x
+# A mismatched dylib makes `ort` refuse to initialize at runtime (or warn and
+# behave unpredictably), so this pin must move together with the `ort` version
+# in szca_media_gateway/Cargo.toml.
+ARG ORT_VERSION=1.22.0
+ARG ORT_SHA256_AARCH64=bb76395092d150b52c7092dc6b8f2fe4d80f0f3bf0416d2f269193e347e24702
+ARG ORT_SHA256_X64=8344d55f93d5bc5021ce342db50f62079daf39aaafb5d311a451846228be49b3
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      curl ca-certificates pkg-config libssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    # Debian's arch names differ from the release asset's; map explicitly rather
+    # than guessing, so an unsupported platform fails loudly here.
+    && case "$(dpkg --print-architecture)" in \
+         arm64) ORT_ARCH=aarch64; ORT_SHA="$ORT_SHA256_AARCH64" ;; \
+         amd64) ORT_ARCH=x64;     ORT_SHA="$ORT_SHA256_X64" ;; \
+         *) echo "unsupported arch: $(dpkg --print-architecture)" >&2; exit 1 ;; \
+       esac \
+    && ORT_TGZ="onnxruntime-linux-${ORT_ARCH}-${ORT_VERSION}.tgz" \
+    && curl --fail --location --proto '=https' --tlsv1.2 -o /tmp/ort.tgz \
+         "https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/${ORT_TGZ}" \
+    && echo "${ORT_SHA}  /tmp/ort.tgz" | sha256sum --check --strict \
+    && mkdir -p /opt/onnxruntime \
+    && tar -xzf /tmp/ort.tgz -C /opt/onnxruntime --strip-components=1 \
+    && rm /tmp/ort.tgz \
+    && test -f /opt/onnxruntime/lib/libonnxruntime.so
+
+# The `ort` crate is built with `load-dynamic`, so it resolves the library at
+# runtime from this path rather than linking it.
+ENV ORT_DYLIB_PATH=/opt/onnxruntime/lib/libonnxruntime.so
+
+RUN cargo install cargo-watch --locked
+
+# ---- Dependency pre-build (cached layer) -----------------------------------
+# Compile the dependency graph into a target dir OUTSIDE the bind-mounted source
+# so the first `cargo run` in a fresh container is not a cold 10-minute build.
+# CARGO_TARGET_DIR matters: compose bind-mounts the host source over
+# /app/szca_media_gateway, which would shadow an in-tree ./target and throw away
+# every cached artifact on each `up`.
+ENV CARGO_TARGET_DIR=/app/target
+WORKDIR /app/dep-cache
+COPY szca_media_gateway/Cargo.toml szca_media_gateway/Cargo.lock ./
+RUN mkdir -p src \
+    && echo 'fn main() {}' > src/main.rs \
+    && echo '' > src/lib.rs \
+    && cargo build --locked \
+    && rm -rf src \
+    # Delete the STUB's own artifacts, keeping every dependency. The stub shares
+    # this crate's name and version, so cargo would otherwise consider the
+    # `fn main() {}` binary up to date and "build" the real source in 0.2s
+    # without compiling it — the container then exits 0 having served nothing.
+    && rm -rf /app/target/debug/szca_media_gateway \
+              /app/target/debug/libszca_media_gateway* \
+              /app/target/debug/deps/szca_media_gateway* \
+              /app/target/debug/deps/libszca_media_gateway* \
+              /app/target/debug/.fingerprint/szca_media_gateway-*
+
+# ---- Runtime layout --------------------------------------------------------
+# Unprivileged user. CARGO_HOME and the target dir must be writable by it:
+# cargo-watch rebuilds as this user on every source change.
+RUN groupadd --system appuser \
+    && useradd --system --gid appuser --create-home appuser \
+    && mkdir -p /app/target /app/models \
+    && chown -R appuser:appuser /app "$CARGO_HOME"
+
+# cargo-watch must START in a crate root — it errors "project root does not
+# exist" from anywhere else, including /app.
+WORKDIR /app/szca_media_gateway
+USER appuser
+
+EXPOSE 3000
+
+# `-C /app` runs the gateway itself from /app, mirroring "cargo run from the repo
+# root" on the host: the gateway resolves relative model paths against its CWD,
+# and the container's model root is /app/models. Watch only src/ — watching the
+# crate root would also see target/ churn.
+CMD ["cargo", "watch", "-w", "/app/szca_media_gateway/src", "-C", "/app", \
+     "-s", "cargo run --manifest-path /app/szca_media_gateway/Cargo.toml"]

@@ -1,0 +1,6 @@
+.venv
+__pycache__
+*.pyc
+*.wav
+smoke_test.sh
+README.md

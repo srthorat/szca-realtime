@@ -1,8 +1,38 @@
-/// Silero VAD v5 Voice Activity Detection module.
-///
-/// Detects speech boundaries and barge-in events.
-/// Target latency: <0.5ms per 20ms audio chunk
-/// License: MIT
+//! Silero VAD v5 Voice Activity Detection module.
+//!
+//! Detects speech boundaries and barge-in events.
+//! Target latency: <0.5ms per 20ms audio chunk
+//! License: MIT
+//!
+//! Speech probability is produced by the real Silero VAD v5 ONNX model when a
+//! model path is supplied and ONNX Runtime is available (see [`SileroModel`]).
+//! When no model is loaded the processor falls back to an RMS-energy heuristic
+//! so the gateway still functions (and unit tests run) without model weights.
+
+use crate::silero::SileroModel;
+
+/// Silero v5 @16kHz is trained on 512-sample windows (32ms). The gateway feeds
+/// 20ms/320-sample chunks, so samples are buffered up to this window before the
+/// model is invoked.
+pub const SILERO_WINDOW_SAMPLES: usize = 512;
+
+/// Audio format validation for protocol boundary.
+#[allow(dead_code)]
+fn validate_audio_format(pcm_data: &[u8], sr: u32, bits: u16, ch: u16) -> Result<(), String> {
+    if pcm_data.is_empty() {
+        return Ok(());
+    }
+    let bps = (bits / 8) as u32;
+    let chs = ch as u32;
+    let expected = (sr * bps * chs) / 1000;
+    if expected == 0 {
+        return Err("Invalid audio format parameters".to_string());
+    }
+    if pcm_data.len() as u32 % expected != 0 {
+        return Err(format!("Audio len {} not mult of frame {}", pcm_data.len(), expected));
+    }
+    Ok(())
+}
 
 /// VAD configuration.
 #[derive(Debug, Clone)]
@@ -17,16 +47,20 @@ pub struct VadConfig {
     pub sample_rate: u32,
     /// Chunk duration in ms
     pub chunk_duration_ms: usize,
+    /// Optional path to the Silero VAD ONNX model. When `Some` and the model
+    /// loads, real inference is used; otherwise the RMS-energy fallback runs.
+    pub model_path: Option<String>,
 }
 
 impl Default for VadConfig {
     fn default() -> Self {
         Self {
-            speech_threshold: 0.5,
+            speech_threshold: 0.35,
             min_speech_duration_ms: 100,
             silence_duration_ms: 500,
             sample_rate: 16000,
             chunk_duration_ms: 20,
+            model_path: None,
         }
     }
 }
@@ -61,10 +95,21 @@ pub struct VadProcessor {
     frame_count: u64,
     /// Total speech frames
     speech_frame_count_total: u64,
+    /// Real Silero VAD model, when loaded. `None` => RMS-energy fallback.
+    model: Option<SileroModel>,
+    /// Sample accumulator so 20ms chunks are batched to the model's window.
+    window_buf: Vec<f32>,
+    /// Most recent model probability, reused for chunks that don't yet fill a
+    /// full model window (keeps per-chunk event cadence unchanged).
+    last_probability: f32,
 }
 
 impl VadProcessor {
     /// Create a new VAD processor.
+    ///
+    /// If `config.model_path` is set and the Silero model loads successfully,
+    /// real ONNX inference is used. Otherwise the processor logs and falls back
+    /// to the RMS-energy heuristic (so it never hard-fails on a missing model).
     pub fn new(config: VadConfig) -> Self {
         // Guard against a zero chunk duration, which would divide-by-zero in
         // the min-frames calculations.
@@ -72,6 +117,22 @@ impl VadProcessor {
             chunk_duration_ms: config.chunk_duration_ms.max(1),
             ..config
         };
+
+        let model = match &config.model_path {
+            Some(path) => match SileroModel::load(path, config.sample_rate) {
+                Ok(m) => {
+                    tracing::info!(model = %path, "Silero VAD model loaded (real inference)");
+                    Some(m)
+                }
+                Err(e) => {
+                    tracing::warn!(model = %path, error = %e,
+                        "Silero VAD model failed to load; using RMS-energy fallback");
+                    None
+                }
+            },
+            None => None,
+        };
+
         Self {
             config,
             is_speech_active: false,
@@ -80,7 +141,15 @@ impl VadProcessor {
             barge_in_detected: false,
             frame_count: 0,
             speech_frame_count_total: 0,
+            model,
+            window_buf: Vec::with_capacity(SILERO_WINDOW_SAMPLES * 2),
+            last_probability: 0.0,
         }
+    }
+
+    /// Whether this processor is running real Silero inference (vs. fallback).
+    pub fn uses_real_model(&self) -> bool {
+        self.model.is_some()
     }
 
     /// Process a chunk of audio and return VAD event.
@@ -94,11 +163,12 @@ impl VadProcessor {
     pub fn process(&mut self, pcm_data: &[u8], is_tts_playing: bool) -> VadEvent {
         self.frame_count += 1;
 
-        // Calculate speech energy probability
-        let probability = self.calculate_speech_probability(pcm_data);
+        // Calculate speech probability: real Silero inference when a model is
+        // loaded, else the RMS-energy fallback.
+        let probability = self.compute_probability(pcm_data);
 
         // Determine event
-        let event = if probability >= self.config.speech_threshold {
+        if probability >= self.config.speech_threshold {
             // Speech detected
             self.speech_frame_count += 1;
             self.silence_frame_count = 0;
@@ -126,13 +196,42 @@ impl VadProcessor {
             } else {
                 VadEvent::Silence
             }
-        };
-
-        event
+        }
     }
 
-    /// Calculate speech probability from audio energy.
-    fn calculate_speech_probability(&self, pcm_data: &[u8]) -> f32 {
+    /// Compute the speech probability for a chunk.
+    ///
+    /// With a loaded Silero model, PCM is converted to normalized f32 and
+    /// buffered until a full model window is available; each full window is run
+    /// through real ONNX inference and the resulting probability is cached and
+    /// returned. Without a model, delegates to the RMS-energy fallback.
+    fn compute_probability(&mut self, pcm_data: &[u8]) -> f32 {
+        if self.model.is_none() {
+            return Self::rms_probability(pcm_data);
+        }
+
+        // Append this chunk's samples (normalized to [-1, 1]) to the window.
+        for chunk in pcm_data.chunks_exact(2) {
+            let s = i16::from_le_bytes([chunk[0], chunk[1]]) as f32 / 32768.0;
+            self.window_buf.push(s);
+        }
+
+        // Run the model for each complete window accumulated so far.
+        while self.window_buf.len() >= SILERO_WINDOW_SAMPLES {
+            let window: Vec<f32> = self.window_buf.drain(..SILERO_WINDOW_SAMPLES).collect();
+            match self.model.as_mut().unwrap().infer(&window) {
+                Ok(p) => self.last_probability = p,
+                Err(e) => {
+                    tracing::warn!(error = %e, "Silero inference failed; retaining last probability");
+                }
+            }
+        }
+
+        self.last_probability
+    }
+
+    /// RMS-energy speech-probability fallback (used when no model is loaded).
+    fn rms_probability(pcm_data: &[u8]) -> f32 {
         if pcm_data.is_empty() {
             return 0.0;
         }
@@ -155,8 +254,7 @@ impl VadProcessor {
         let rms = (sum_squares / sample_count as f64).sqrt();
 
         // Normalize to 0-1 range (typical speech RMS is 1000-5000)
-        let normalized = (rms / 5000.0).min(1.0) as f32;
-        normalized
+        (rms / 5000.0).min(1.0) as f32
     }
 
     /// Minimum speech frames needed to trigger SpeechStart.
@@ -179,6 +277,27 @@ impl VadProcessor {
     /// Check if barge-in was detected.
     pub fn is_barge_in_detected(&self) -> bool {
         self.barge_in_detected
+    }
+
+    /// Check if audio has valid format (16kHz, 16-bit mono PCM)
+    #[allow(dead_code)]
+    fn validate_audio_format(&self, pcm_data: &[u8]) -> Result<(), String> {
+        if pcm_data.is_empty() {
+            return Ok(());
+        }
+
+        let expected_bytes_per_frame = (self.config.sample_rate * 2 * 1) / 1000; // 16-bit mono = 2 bytes * 1 channel
+        let actual_frame_bytes = self.config.chunk_duration_ms * expected_bytes_per_frame as usize;
+
+        if actual_frame_bytes == 0 {
+            return Err("Invalid audio format configuration".to_string());
+        }
+
+        if pcm_data.len() % actual_frame_bytes != 0 {
+            return Err(format!("Audio length mismatch: got {}, expected multiples of {}", pcm_data.len(), actual_frame_bytes));
+        }
+
+        Ok(())
     }
 
     /// Reset barge-in flag (after handling interruption).
@@ -231,7 +350,7 @@ mod tests {
     #[test]
     fn test_vad_config_default() {
         let config = VadConfig::default();
-        assert_eq!(config.speech_threshold, 0.5);
+        assert!((config.speech_threshold - 0.35).abs() < 0.01);
         assert_eq!(config.min_speech_duration_ms, 100);
         assert_eq!(config.silence_duration_ms, 500);
         assert_eq!(config.sample_rate, 16000);

@@ -13,7 +13,9 @@
 CMakeCache.txt
 CMakeFiles/
 
-# Model weights (downloaded via download_models.sh, mounted as a volume; never committed)
+# Model weights — one root for the whole repo: models/{stt,tts,llm,vad,dfn3}.
+# Downloaded via download_models.sh, mounted as a volume; never committed (the
+# LLM alone is ~14 GB). `**/models/` also covers any stray per-crate model dir.
 **/models/
 *.onnx
 *.bin
@@ -30,3 +32,6 @@ CMakeFiles/
 .idea/
 .vscode/
 *.swp
+.venv
+__pycache__/
+*.pyc

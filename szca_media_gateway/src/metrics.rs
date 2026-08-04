@@ -167,6 +167,62 @@ impl Metrics {
             self.uptime_secs(),
         )
     }
+
+    /// Export metrics including stage pool health and latency quantiles as Prometheus format.
+    pub fn export_prometheus_with_pools(&self, pools: Option<&crate::stage_pools::StagePools>) -> String {
+        let mut out = self.export_prometheus();
+
+        if let Some(pools) = pools {
+            out.push_str("\n# HELP szca_pool_queue_depth Current queue depth per stage pool\n");
+            out.push_str("# TYPE szca_pool_queue_depth gauge\n");
+            if let Some(ref p) = pools.stt {
+                out.push_str(&format!("szca_pool_queue_depth{{stage=\"stt\"}} {}\n", p.queue_depth()));
+            } else if let Some(ref p) = pools.streaming_stt {
+                out.push_str(&format!("szca_pool_queue_depth{{stage=\"stt\"}} {}\n", p.in_use()));
+            }
+            if let Some(ref p) = pools.llm {
+                out.push_str(&format!("szca_pool_queue_depth{{stage=\"llm\"}} {}\n", p.queue_depth()));
+            }
+            if let Some(ref p) = pools.tts {
+                out.push_str(&format!("szca_pool_queue_depth{{stage=\"tts\"}} {}\n", p.queue_depth()));
+            }
+
+            out.push_str("\n# HELP szca_pool_replicas Number of active replicas per stage pool\n");
+            out.push_str("# TYPE szca_pool_replicas gauge\n");
+            if let Some(ref p) = pools.stt {
+                out.push_str(&format!("szca_pool_replicas{{stage=\"stt\"}} {}\n", p.replica_count()));
+            } else if let Some(ref p) = pools.streaming_stt {
+                out.push_str(&format!("szca_pool_replicas{{stage=\"stt\"}} {}\n", p.replica_count()));
+            }
+            if let Some(ref p) = pools.llm {
+                out.push_str(&format!("szca_pool_replicas{{stage=\"llm\"}} {}\n", p.replica_count()));
+            }
+            if let Some(ref p) = pools.tts {
+                out.push_str(&format!("szca_pool_replicas{{stage=\"tts\"}} {}\n", p.replica_count()));
+            }
+
+            out.push_str("\n# HELP szca_pool_latency_milliseconds Execution latency quantiles per stage pool\n");
+            out.push_str("# TYPE szca_pool_latency_milliseconds summary\n");
+
+            let stages = [
+                ("stt", pools.stt.as_ref().and_then(|p| p.latency_snapshot())),
+                ("llm", pools.llm.as_ref().and_then(|p| p.latency_snapshot())),
+                ("tts", pools.tts.as_ref().and_then(|p| p.latency_snapshot())),
+            ];
+
+            for (stage_name, snap_opt) in stages {
+                if let Some(snap) = snap_opt {
+                    out.push_str(&format!("szca_pool_latency_milliseconds{{stage=\"{stage_name}\",quantile=\"0.5\"}} {}\n", snap.p50_ms));
+                    out.push_str(&format!("szca_pool_latency_milliseconds{{stage=\"{stage_name}\",quantile=\"0.9\"}} {}\n", snap.p90_ms));
+                    out.push_str(&format!("szca_pool_latency_milliseconds{{stage=\"{stage_name}\",quantile=\"0.95\"}} {}\n", snap.p95_ms));
+                    out.push_str(&format!("szca_pool_latency_milliseconds{{stage=\"{stage_name}\",quantile=\"0.99\"}} {}\n", snap.p99_ms));
+                    out.push_str(&format!("szca_pool_latency_milliseconds_count{{stage=\"{stage_name}\"}} {}\n", snap.count));
+                }
+            }
+        }
+
+        out
+    }
 }
 
 impl Default for Metrics {
@@ -285,5 +341,22 @@ mod tests {
         assert!(prometheus.contains("szca_requests_total 1"));
         assert!(prometheus.contains("szca_llm_tokens 1"));
         assert!(prometheus.contains("# TYPE szca_requests_total counter"));
+    }
+
+    #[test]
+    fn test_metrics_prometheus_export_with_pools() {
+        let metrics = Metrics::new();
+        let prometheus_no_pools = metrics.export_prometheus_with_pools(None);
+        assert!(prometheus_no_pools.contains("szca_requests_total 0"));
+
+        let pools = crate::stage_pools::StagePools {
+            stt: None,
+            streaming_stt: None,
+            llm: None,
+            tts: None,
+        };
+        let prometheus_pools = metrics.export_prometheus_with_pools(Some(&pools));
+        assert!(prometheus_pools.contains("# HELP szca_pool_queue_depth"));
+        assert!(prometheus_pools.contains("# HELP szca_pool_replicas"));
     }
 }

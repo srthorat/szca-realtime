@@ -1,0 +1,31 @@
+# =============================================================================
+# SZCA Media Gateway — Development values (CPU-only, single user)
+# =============================================================================
+# Override values for dev/test on CPU-only nodes.
+# =============================================================================
+
+replicaCount: 1
+
+ingress:
+  host: dev-api.szca.example.com
+
+env:
+  LLM_BACKEND: onnx
+  STT_REPLICAS: "1"
+  LLM_REPLICAS: "1"
+  TTS_REPLICAS: "1"
+  LLM_MAX_NEW_TOKENS: "96"
+
+resources:
+  requests:
+    cpu: "2"
+    memory: "4Gi"
+  limits:
+    cpu: "8"
+    memory: "16Gi"
+
+nodeSelector:
+  node.kubernetes.io/instance-type: c6i.2xlarge
+
+autoscaling:
+  enabled: false

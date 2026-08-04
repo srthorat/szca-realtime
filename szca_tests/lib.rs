@@ -1,11 +1,15 @@
-//! SZCA Test Suite
+//! SZCA reference test crate (`szca_tests`)
 //!
-//! Comprehensive tests for the SZCA voice engine:
-//! - Integration tests (pipeline, component interaction)
-//! - E2E tests (full user journeys)
-//! - Performance benchmarks (throughput, latency)
-//! - Security tests (auth, injection, rate limiting)
-//! - Metrics tests (STT WER, LLM TTFT/TPOT, TTS quality)
+//! **Scope:** lightweight mock pipelines and reference logic — this crate does
+//! **not** depend on `szca_media_gateway` and does not run real ONNX inference.
+//!
+//! | Area | What runs here | Real gateway coverage |
+//! |------|----------------|------------------------|
+//! | Integration | `simulate_pipeline` stubs | `szca_media_gateway/tests/e2e_pipeline.rs` |
+//! | E2E journeys | Mock user flows | `rust-tests` job (`cargo test` in gateway) |
+//! | Security | Reference `validate_auth` helpers | Gateway `require_auth` in `api_routes.rs` |
+//! | Performance | In-test timing of mocks | Real-weights tests (opt-in, local/CI manual) |
+//! | Metrics | LLM metric calculators | Gateway unit tests + Prometheus endpoint |
 //!
 //! The module files do not follow Rust's default `mod name -> name.rs`
 //! layout, so each declaration uses an explicit `#[path]` attribute that

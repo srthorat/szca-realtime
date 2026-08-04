@@ -1,0 +1,136 @@
+networks:
+  szca-net:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: szca-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - gateway
+      - redis
+    networks:
+      - szca-net
+
+  gateway:
+    image: szca-media-gateway:latest
+    container_name: szca-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - RUST_LOG=info
+      - STT_BACKEND=parakeet
+      - LLM_BACKEND=vllm
+      - LLM_BASE_URL=http://vllm_workers
+      - REDIS_URL=redis://redis:6379
+      - SZCA_QUEUE_BACKLOG=128
+      - SZCA_WORKER_THREADS=32
+      - SZCA_BLOCKING_THREADS=512
+      - STT_REPLICAS=8
+      - LLM_REPLICAS=4
+      - TTS_REPLICAS=16
+    volumes:
+      - ./models:/app/models:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '16'
+          memory: 32G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 2
+              capabilities: [gpu]
+    depends_on:
+      redis:
+        condition: service_healthy
+      worker1:
+        condition: service_healthy
+    networks:
+      - szca-net
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  redis:
+    image: redis:7-alpine
+    container_name: szca-redis
+    # Internal only - no external port exposure
+    expose:
+      - "6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - szca-net
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  worker1:
+    image: vllm/vllm-openai:latest
+    container_name: szca-vllm-worker1
+    command: >
+      --model NousResearch/Hermes-3-Llama-3.1-8B
+      --quantization fp8
+      --dtype float16
+      --gpu-memory-utilization 0.88
+      --max-num-seqs 250
+      --port 8000
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HUGGING_FACE_HUB_TOKEN:-}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 360s
+    networks:
+      - szca-net
+    security_opt:
+      - no-new-privileges:true
+
+  worker2:
+    image: vllm/vllm-openai:latest
+    container_name: szca-vllm-worker2
+    command: >
+      --model NousResearch/Hermes-3-Llama-3.1-8B
+      --quantization fp8
+      --dtype float16
+      --gpu-memory-utilization 0.88
+      --max-num-seqs 250
+      --port 8000
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HUGGING_FACE_HUB_TOKEN:-}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 360s

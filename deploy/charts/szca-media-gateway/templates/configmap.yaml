@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "szca-media-gateway.fullname" . }}-config
+  labels:
+    {{- include "szca-media-gateway.labels" . | nindent 4 }}
+data:
+  LLM_BACKEND: "{{ .Values.env.LLM_BACKEND }}"
+  STT_MODEL_DIR: "{{ .Values.env.STT_MODEL_DIR }}"
+  TTS_MODEL_DIR: "{{ .Values.env.TTS_MODEL_DIR }}"
+  TTS_VOICE: "{{ .Values.env.TTS_VOICE }}"
+  SILERO_VAD_MODEL: "{{ .Values.env.SILERO_VAD_MODEL }}"
+  DFN3_MODEL_DIR: "{{ .Values.env.DFN3_MODEL_DIR }}"
+  SZCA_MAX_SESSIONS: "{{ .Values.env.SZCA_MAX_SESSIONS }}"
+  SZCA_QUEUE_BACKLOG: "{{ .Values.env.SZCA_QUEUE_BACKLOG }}"
+  SZCA_WORKER_THREADS: "{{ .Values.env.SZCA_WORKER_THREADS }}"
+  SZCA_BLOCKING_THREADS: "{{ .Values.env.SZCA_BLOCKING_THREADS }}"
+  ORT_DYLIB_PATH: "{{ .Values.env.ORT_DYLIB_PATH }}"
+  RUST_LOG: "{{ .Values.env.RUST_LOG }}"
+  SZCA_LISTEN_ADDR: "0.0.0.0"
+  SZCA_PORT: "3000"
+  # When overriding per-environment:
+  # LLM_BASE_URL: "http://vllm-lb:8000"
+  # LLM_MODEL: "hermes-3-llama-3.1-8b"

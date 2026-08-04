@@ -1,0 +1,175 @@
+# =============================================================================
+# SZCA Media Gateway — Helm values
+# =============================================================================
+# Default values for szca-media-gateway chart.
+# Override per-environment in values-{env}.yaml or --set flags.
+# =============================================================================
+
+# ---- Global ---------------------------------------------------------------
+global:
+  environment: production
+  clusterDomain: cluster.local
+
+# ---- Replica count --------------------------------------------------------
+replicaCount: 2
+
+# ---- Image ----------------------------------------------------------------
+image:
+  repository: szca/media-gateway
+  tag: "5.0.0"
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+# ---- Service --------------------------------------------------------------
+service:
+  type: ClusterIP
+  port: 3000
+  annotations: {}
+
+# ---- Ingress (AWS ALB) ----------------------------------------------------
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=360
+    # Enable sticky sessions for WebSocket stickiness
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+  host: api.szca.example.com
+  tls: []
+
+# ---- Horizontal Pod Autoscaler --------------------------------------------
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# ---- Resources ------------------------------------------------------------
+resources:
+  requests:
+    cpu: "4"
+    memory: "8Gi"
+  limits:
+    cpu: "16"
+    memory: "32Gi"
+
+# ---- Node selector / tolerations ------------------------------------------
+nodeSelector:
+  node.kubernetes.io/instance-type: c7i.4xlarge
+tolerations: []
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - szca-media-gateway
+          topologyKey: topology.kubernetes.io/zone
+
+# ---- Pod Disruption Budget ------------------------------------------------
+pdb:
+  enabled: true
+  minAvailable: 1
+
+# ---- Probe configuration --------------------------------------------------
+probes:
+  liveness:
+    path: /health
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 10
+    failureThreshold: 3
+  readiness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 2
+
+# ---- Environment variables ------------------------------------------------
+env:
+  # Override LLM_BACKEND to "vllm" for GPU-based LLM inference
+  LLM_BACKEND: onnx
+
+  # STT / TTS / VAD model paths
+  STT_MODEL_DIR: /opt/szca/models/stt
+  TTS_MODEL_DIR: /opt/szca/models/tts
+  TTS_VOICE: af_heart
+  SILERO_VAD_MODEL: /opt/szca/models/vad/silero_vad.onnx
+  DFN3_MODEL_DIR: /opt/szca/models/dfn3
+
+  # Scale settings
+  SZCA_MAX_SESSIONS: "1000"
+  SZCA_QUEUE_BACKLOG: "1024"
+  SZCA_WORKER_THREADS: "32"
+  SZCA_BLOCKING_THREADS: "256"
+
+  # ONNX Runtime path
+  ORT_DYLIB_PATH: /opt/onnxruntime/lib/libonnxruntime.so
+
+  # Logging
+  RUST_LOG: info,szca_media_gateway=info
+
+# ---- Secrets (values never committed; use External Secrets or sealed-secrets)
+envSecrets:
+  enabled: true
+  secretProvider: "external-secrets"
+  secretName: "szca-media-gateway-secrets"
+
+# ---- ExternalSecret configuration -----------------------------------------
+externalSecret:
+  enabled: true
+  refreshInterval: "1h"
+  secretStoreRef:
+    name: aws-secret-store
+    kind: ClusterSecretStore
+  target:
+    name: szca-media-gateway-secrets
+  dataFrom:
+    - extract:
+        key: /szca/production/gateway
+
+# ---- Persistent volumes ---------------------------------------------------
+volumes:
+  models:
+    enabled: true
+    size: 20Gi
+    storageClass: gp3
+    existingClaim: ""
+    mountPath: /opt/szca/models
+    accessMode: ReadWriteOnce
+
+  onnxruntime:
+    enabled: true
+    size: 1Gi
+    storageClass: gp3
+    existingClaim: ""
+    mountPath: /opt/onnxruntime
+    accessMode: ReadWriteOnce
+
+# ---- ServiceAccount -------------------------------------------------------
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+# ---- PodSecurityContext ---------------------------------------------------
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsNonRoot: true
+
+# ---- Misc -----------------------------------------------------------------
+nameOverride: ""
+fullnameOverride: ""

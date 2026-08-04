@@ -1,0 +1,434 @@
+[
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/main.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/main.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/main.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/main.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/szca_onnx_engine.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/szca_onnx_engine.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/tests/test_stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_stt.cpp",
+  "output": "CMakeFiles/test_stt.dir/tests/test_stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_stt.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_stt.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/tests/test_llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_llm.cpp",
+  "output": "CMakeFiles/test_llm.dir/tests/test_llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_llm.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_llm.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/tests/test_tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_tts.cpp",
+  "output": "CMakeFiles/test_tts.dir/tests/test_tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_tts.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_tts.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/tests/test_resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_resampler.cpp",
+  "output": "CMakeFiles/test_resampler.dir/tests/test_resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_resampler.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_resampler.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/tests/test_ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_ipc.cpp",
+  "output": "CMakeFiles/test_ipc.dir/tests/test_ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_ipc.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_ipc.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/tests/test_session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_session.cpp",
+  "output": "CMakeFiles/test_session.dir/tests/test_session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_session.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_session.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_session.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_session.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_session.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_session.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_session.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_session.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_session.dir/src/ort_utils.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/tests/test_engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/tests/test_engine.cpp",
+  "output": "CMakeFiles/test_engine.dir/tests/test_engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/stt.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/stt.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/stt.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/llm.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/llm.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/llm.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/tts.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/tts.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/tts.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/resampler.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/resampler.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/resampler.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/ipc.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ipc.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/ipc.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/session.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/session.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/session.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/engine.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/engine.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/engine.cpp.o"
+},
+{
+  "directory": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/build_tmp",
+  "command": "/usr/bin/c++ -DHAS_ONNXRUNTIME=1 -I/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/include -I/opt/homebrew/include/onnxruntime -O3 -DNDEBUG -march=native -std=gnu++20 -arch arm64 -o CMakeFiles/test_engine.dir/src/ort_utils.cpp.o -c /Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "file": "/Users/sthorat/Documents/AI/realtime/szca_onnx_engine/src/ort_utils.cpp",
+  "output": "CMakeFiles/test_engine.dir/src/ort_utils.cpp.o"
+}
+]

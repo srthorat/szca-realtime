@@ -32,9 +32,9 @@ execute_process(COMMAND brew --prefix
                 OUTPUT_STRIP_TRAILING_WHITESPACE
                 ERROR_QUIET)
 find_library(ONNXRUNTIME_LIB onnxruntime
-    PATHS /usr/lib /usr/local/lib /opt/homebrew/lib "${HOMEBREW_PREFIX}/lib")
+    PATHS /usr/lib /usr/local/lib /opt/homebrew/lib /opt/onnxruntime/lib "${HOMEBREW_PREFIX}/lib")
 find_path(ONNXRUNTIME_INCLUDE onnxruntime_c_api.h
-    PATHS /usr/include /usr/local/include /opt/homebrew/include
+    PATHS /usr/include /usr/local/include /opt/homebrew/include /opt/onnxruntime/include
           "${HOMEBREW_PREFIX}/include"
     PATH_SUFFIXES onnxruntime)
 

@@ -1,0 +1,111 @@
+# ============================================================================
+# SZCA Dev Stack — Rust gateway + dev LLM server, hot-reload
+# ============================================================================
+# Usage:
+#   # Option A: Full stack (gateway + dev LLM server)
+#   docker compose -f docker-compose.dev.yml up --build
+#
+#   # Option B: Gateway only (uses stub LLM, no GPU needed)
+#   docker compose -f docker-compose.dev.yml up gateway --build
+#
+#   # Option C: Local dev (no Docker at all)
+#   ./download_models.sh && cargo run --manifest-path szca_media_gateway/Cargo.toml
+#
+# The gateway hot-reloads on source changes via cargo-watch.
+# ============================================================================
+
+services:
+
+  # ── Model presence check (optional, run on demand) ───────────────────────
+  #   docker compose -f docker-compose.dev.yml run --rm model-check
+  # Models are NOT downloaded here — run ./download_models.sh on the HOST, and
+  # the read-only bind mount below makes them visible to every service. A named
+  # volume would mean a second 15 GB copy that has to be seeded by hand.
+  model-check:
+    image: curlimages/curl:latest
+    volumes:
+      - ./models:/models:ro
+    command: >
+      sh -c '
+        ls /models/stt/*.onnx /models/tts/*.onnx /models/llm/*/*.onnx >/dev/null 2>&1 &&
+          { echo "Models found:"; du -sh /models/*; } ||
+          { echo "Models MISSING — run ./download_models.sh on the host first."; exit 1; }
+      '
+
+  # ── Rust media gateway (hot-reload) ──────────────────────────────────────
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Source bind mount drives cargo-watch hot-reload. The build cache lives at
+      # /app/target (CARGO_TARGET_DIR in Dockerfile.dev), OUTSIDE this mount, so
+      # an in-tree host ./target cannot shadow the image's prebuilt deps.
+      - ./szca_media_gateway:/app/szca_media_gateway
+      # Host models bind-mounted read-only. Read-only is deliberate: nothing in
+      # the pipeline writes weights, and it makes a stray write fail loudly
+      # instead of mutating a 15 GB checkpoint on the host.
+      - ./models:/app/models:ro
+      # Named volume for cargo's build cache so rebuilds survive `down`/`up`.
+      - cargo-target:/app/target
+    environment:
+      # Gateway config
+      - RUST_LOG=info
+      - SZCA_LISTEN_ADDR=0.0.0.0
+      - SZCA_PORT=3000
+      # Pool sizing (dev: single replicas). Qwen2.5-1.5B INT8 is ~1.5 GB,
+      # so LLM_REPLICAS>1 needs ~1.5 GB more RAM per replica.
+      - STT_REPLICAS=1
+      - LLM_REPLICAS=1
+      - TTS_REPLICAS=1
+      # LLM backend: "onnx" for in-process, "vllm" for external dev server
+      - LLM_BACKEND=onnx
+      # Qwen2.5-1.5B INT8 — ~1.5 GB, ~10-20 tok/s on CPU.
+      # For faster iteration: LLM_MODEL=qwen25-05b ./download_models.sh (350 MB, 30-50 tok/s).
+      - LLM_MODEL_DIR=/app/models/llm/Qwen2.5-1.5B-Instruct
+      # Per-stage model dirs under one root (mirrors the host's ./models/).
+      - STT_MODEL_DIR=/app/models/stt
+      - TTS_MODEL_DIR=/app/models/tts
+      # Real Silero VAD (downloads as part of ./download_models.sh).
+      - SILERO_VAD_MODEL=/app/models/vad/silero_vad.onnx
+      # DeepFilterNet3 noise cancellation (downloads as part of ./download_models.sh).
+      - DFN3_MODEL_DIR=/app/models/dfn3
+    depends_on: []
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    restart: unless-stopped
+
+  # ── Dev LLM server (ONNX Runtime GenAI, CPU) ────────────────────────────
+  # Optional: uncomment to use the Python dev LLM server instead of in-process ONNX.
+  # Set LLM_BACKEND=vllm and LLM_BASE_URL=http://llm-dev:8080 on the gateway.
+  #
+  # llm-dev:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.llm-dev
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./models:/app/models:ro
+  #   environment:
+  #     - LLM_MODEL_PATH=/app/models/llm/llama3.1-8b-onnx/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 120s  # model load is slow
+  #   restart: unless-stopped
+
+volumes:
+  # Cargo build cache. Kept in a volume (not on the host, not in the image) so
+  # incremental rebuilds survive `down`/`up` without a Linux target dir colliding
+  # with the host's macOS/Windows one.
+  #   Reset it with: docker compose -f docker-compose.dev.yml down -v
+  cargo-target:

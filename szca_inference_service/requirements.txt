@@ -1,0 +1,10 @@
+# SZCA inference service — pinned to versions verified 2026-07-22.
+onnxruntime==1.27.0
+numpy==2.4.6
+tokenizers==0.23.1
+soundfile==0.14.0
+fastapi==0.139.2
+uvicorn[standard]==0.51.0
+python-multipart==0.0.32
+# Kokoro's official G2P (installs spacy + en_core_web_sm on first use).
+misaki[en]==0.9.4
